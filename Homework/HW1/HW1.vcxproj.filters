@@ -25,7 +25,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HW1.cpp">
+    <ClCompile Include="HW_1_Login_Registration_Carter_Bryce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

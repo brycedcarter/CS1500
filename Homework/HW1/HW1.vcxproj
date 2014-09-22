@@ -82,7 +82,7 @@
     <ResourceCompile Include="HW1.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HW1.cpp" />
+    <ClCompile Include="HW_1_Login_Registration_Carter_Bryce.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
