@@ -44,18 +44,54 @@ int main()
 	index = searchBooksByIsbn(987, isbns, BOOK_COUNT);
 	displayBook(index, titles, authors, isbns, BOOK_COUNT);
 
+	index = searchBooksByIsbn(1241234, isbns, BOOK_COUNT);
+	displayBook(index, titles, authors, isbns, BOOK_COUNT);
+
 	getchar();
 }
 
 void displayBook(int bookIndex, string titles[], string authors[], int isbns[], int bookCount) {
 
-	if (isbns[i] == bookIndex) {
-		cout << "Title: " << titles[bookIndex] << endl << "Author: " << authors[bookIndex] << endl << "ISBN: " << isbns[bookIndex];
+	if (bookIndex < bookCount && bookIndex >= 0) {
+		cout << "Title: " << titles[bookIndex] << endl << "Author: " << authors[bookIndex] << endl << "ISBN: " << isbns[bookIndex] << endl << endl;
+	}
+	else
+	{
+		cout << "No book found!\n";
 	}
 }
 
-int searchBooksByTitle(string title, string titles[], int bookCount);
+int searchBooksByTitle(string title, string titles[], int bookCount)
+{
+	for (int i = 0; i < bookCount; i++)
+	{
+		if (titles[i] == title)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
 
 
-int searchBooksByAuthor(string author, string authors[], int bookCount);
-int searchBooksByIsbn(int isbn, int isbns[], int bookCount);
+int searchBooksByAuthor(string author, string authors[], int bookCount)
+{
+	for (int i = 0; i < bookCount; i++)
+	{
+		if (authors[i] == author)
+		{
+			return i;
+		}
+	}
+}
+int searchBooksByIsbn(int isbn, int isbns[], int bookCount)
+{
+	for (int i = 0; i < bookCount; i++)
+	{
+		if (isbns[i] == isbn)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
