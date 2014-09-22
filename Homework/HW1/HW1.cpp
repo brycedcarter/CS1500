@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
+#include <typeinfo>
 using namespace std;
 
 const int LOGIN = 1;
 const int REGISTER = 2;
 const int LOGIN_AS_GUEST = 3;
 const int QUIT = 0;
+const string CLEAN_DISPLAY_STR = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+const string HEADDER_BAR_STR = "=======================================================\n";
 
 struct user {
 	string username;
@@ -17,7 +20,7 @@ struct user {
 
 int main() 
 {
-	short selection = -1;
+	int selection = -1;
 	string username;
 	string password;
 	string passwordVerify;
@@ -44,20 +47,28 @@ int main()
 			"[0] Quit\n";
 
 		cin >> selection;
+		// Clean out the cin buffer of any unwanted junk
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+
 		cout << "\n\n\n";
 		switch (selection)
 		{
 		case LOGIN:
-			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-				"=======================================================\n"
-				"LOGIN\n"
-				"=======================================================\n\n";
+			// Display login headder
+			cout << CLEAN_DISPLAY_STR <<
+				HEADDER_BAR_STR <<
+				"LOGIN\n" <<
+				HEADDER_BAR_STR << endl;
+
+			// Show username and password prompts
 			cout << "Username: ";
 			cin >> username;
 			cout << "\nPassword: ";
 			cin >> password;
-			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-				;
+
+			// Clear the display and show either a login message or an error
+			cout << CLEAN_DISPLAY_STR;
 			loginMatch = false;
 			for (int i=0; i < 3; i++)
 			{
@@ -79,20 +90,24 @@ int main()
 			}
 
 			break;
-		case REGISTER:
 
-			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-				"=======================================================\n"
-				"REGISTER\n"
-				"=======================================================\n\n";
+		case REGISTER:
+			// Display register headder
+			cout << CLEAN_DISPLAY_STR <<
+				HEADDER_BAR_STR <<
+				"REGISTER\n" <<
+				HEADDER_BAR_STR << endl;
+
+			// Display register prompts ("username", "password", and "verify password")
 			cout << "Username: ";
 			cin >> username;
 			cout << "\nPassword: ";
 			cin >> password;
 			cout << "\nVerify Password: ";
 			cin >> passwordVerify;
-			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
+			// Clear the display and show either a successful registration message or an error
+			cout << CLEAN_DISPLAY_STR;
 			if (password == passwordVerify)
 			{
 				cout << "\n\n================= SUCCESS ========================================\n\n"
@@ -108,7 +123,8 @@ int main()
 
 			break;
 		case LOGIN_AS_GUEST:
-			cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+			// Clear the display and show a guest login message
+			cout << CLEAN_DISPLAY_STR;
 			cout << "\n\n============= Hello Guest =============\n\n"
 					"You are now logged in as a guest user"
 					"\n\n========================================\n\n\n\n";
@@ -116,7 +132,11 @@ int main()
 		case QUIT:
 			break;
 		default:
-			cout << "Invalid Command!\n";
+			// Clear the display and show invalid command message
+			cout << CLEAN_DISPLAY_STR;
+			cout << "\n\n================= ERROR =================\n\n"
+				"Invalid Command!"
+				"\n\n=========================================\n\n\n\n";
 			break;
 		}
 	}
