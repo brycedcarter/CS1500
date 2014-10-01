@@ -53,8 +53,12 @@ int main()
 	int start, count;
 	cout << "Start: ";
 	cin >> start;
+	if (start >= size4) error(100);
+	if (start < 0) error(100);
 	cout << "Count: ";
 	cin >> count;
+	if (start+count > size4) error(100);
+	if (count < 0) error(100);
 	int* sub = subArray(arr4, size4, start, count);
 
 	// display sub array
