@@ -84,14 +84,15 @@ Employee createEmployee()
 }
 
 void addEmployee(Department* department, Employee employee)
-{
+{		
 	if (department->maxSize > department->currentSize)
 	{
 		cout << "Adding employee === ";
 		displayEmployee(employee);
 		cout << " ==== to the " << department->name << " department\n\n";
-		department->currentSize++;
 		department->employees[department->currentSize] = employee;
+		department->currentSize++;
+
 	}
 	else
 	{
