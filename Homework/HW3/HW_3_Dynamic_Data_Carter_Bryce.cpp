@@ -19,9 +19,6 @@ void updateApp(Application* appArray, int appIndex, Application* app);
 
 int main()
 {
-	int test;
-	cin >> test;
-	cout << test;
 	// menu choices
 	const int QUIT = 0;
 	const int CREATE_NEW_APP_ARRAY = 1;
@@ -87,7 +84,7 @@ int displayMainMenu()
 		"[4] Update Existing Application\n"
 		"[0] Quit\n"
 		"Your choice : \n";
-	choice = BDC::IO_Helper::test(1);
+	choice = BDC::IO_Helper::getInput<int>(BDC::MULTI_WORD);
 	return choice;
 }
 
