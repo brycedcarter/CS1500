@@ -17,8 +17,8 @@ void setComplexByPointer(Complex *a, float real, float imaginary);
 
 int main()
 {
-	Complex x = { 3, 2 };
-	Complex y = { 1, 4 };
+	Complex x = { -3, -2 };
+	Complex y = { -1, -4 };
 	displayComplex(x);
 	displayComplex(y);
 

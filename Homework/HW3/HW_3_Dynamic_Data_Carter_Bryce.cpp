@@ -84,7 +84,7 @@ int displayMainMenu()
 		"[4] Update Existing Application\n"
 		"[0] Quit\n"
 		"Your choice : \n";
-	choice = BDC::IO_Helper::getInput<int>(BDC::MULTI_WORD);
+	choice = BDC::IO_Helper::getInput<int>(BDC::POS_INT, BDC::RETRY);
 	return choice;
 }
 

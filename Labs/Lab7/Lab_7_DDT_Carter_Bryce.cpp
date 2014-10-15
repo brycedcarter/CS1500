@@ -71,16 +71,25 @@ void displayDepartment(Department* department)
 Employee createEmployee()
 {
 	Employee newEmployee;
+	cout << "\n\n\n";
 	cout << "Employee First Name: ";
 	cin >> newEmployee.firstName;
 	cout << "Employee Last Name: ";
 	cin >> newEmployee.lastName;
 	cout << "Employee Salary: ";
 	cin >> newEmployee.salary;
-	cout << "\nNew employee created:";
-	displayEmployee(newEmployee);
-	cout << "\n\n\n";
-	return newEmployee;
+	if (newEmployee.salary > 0)
+	{
+		cout << "\nNew employee created:\n";
+		displayEmployee(newEmployee);
+		cout << "\n\n\n";
+		return newEmployee;
+	}
+	else
+	{
+		cout << "\n\n\nCreating new employee failed. \nSalary must be positive\nPlease try again\n\n\n\n";
+		return createEmployee();
+	}
 }
 
 void addEmployee(Department* department, Employee employee)
