@@ -12,9 +12,7 @@ namespace BDC
 		INT_SET,
 		FLOAT,
 		FLOAT_RANGE,
-		FLOAT_SET,
-		POS_INT,
-		POS_FLOAT
+		FLOAT_SET
 	};
 
 	enum ErrorHandlingMethod
@@ -23,46 +21,93 @@ namespace BDC
 		RETRY
 	};
 
-	class IO_Helper
+	class Outputter
 	{
 	public:
-		template <typename returnType> 
-		static inline returnType getInput(InputCheckType check);
-		template <typename returnType> 
-		static returnType getInput(static *InputChecker check, ErrorHandlingMethod onError);
-		template <typename returnType>
-		static returnType getInput(static *InputChecker check, ErrorHandlingMethod onError, std::string errorMessage);
-
-		static std::string getInput(static *InputChecker<string> check, ErrorHandlingMethod onError, std::string errorMessage, std::string typeVar);
-		static int getInput(static *InputChecker check, ErrorHandlingMethod onError, std::string errorMessage, int typeVar);
-		static float getInput(static *InputChecker check, ErrorHandlingMethod onError, std::string errorMessage, float typeVar);
-
-		static std::string getInputString(static *InputChecker check, ErrorHandlingMethod onError, std::string errorMessage);
-		static int getInputInt(static *InputChecker check, ErrorHandlingMethod onError, std::string errorMessage);
-		static float getInputFloat(static *InputChecker check, ErrorHandlingMethod onError, std::string errorMessage);
-
-		template <typename returnType>
-		static returnType raiseError(ErrorHandlingMethod onError, std::string errorMessage, InputCheckType check, 
-			returnType(*callBack)(InputCheckType check, ErrorHandlingMethod onError, std::string errorMessage));
-
+		static void printFloat(float value, int precision);
+		static void printDollarValue(float value);
+		static void printSelectionList(std::string* list, int listLength);
 	};
 
-
-	template <class inputType>
-	class InputChecker
+	class InputChecker 
 	{
+	public:
+		void setBounds(float lower, float upper);
+		void setMatchingSet(const float* arr, int setSize);
+		bool removeFromMatchingSet(float numToRemove);
+		bool addToMatchingSet(float numToAdd);
+		void setBoundsTypes(bool lowerInclusive, bool upperInclusive);
+		void setErrorHandling(ErrorHandlingMethod onError);
+		void setErrorHandling(ErrorHandlingMethod onError, std::string errorMessage);
+
+	protected:
 		InputChecker();
-		InputChecker(InputCheckType check);
-		bool check(inputType input);
-	private:
+		~InputChecker();
+
+		bool processError();
+		void cleanCin();
+
 		InputCheckType checkType;
-		float lowerBound = 0;
-		float upperBound = 3;
-		int setSize = 3;
-		int intSet[3] = { 0, 1, 2 };
-		float floatSet[3] = { 0, 1, 2 };
-		string wordSet[3] = { "zero", "one", "two" };
-		bool upperBoundInclusive = true;
-		bool lowerBoundInclusive = true;
+		float lowerBound;
+		float upperBound;
+		int setSize;
+		float* matchingSet;
+		bool upperBoundInclusive;
+		bool lowerBoundInclusive;
+		ErrorHandlingMethod onError;
+		std::string errorMessage;
 	};
+
+	//============================== StringInputCheker ============================
+	//=============================================================================
+
+	class StringInputChecker : public InputChecker
+	{
+	public:
+		StringInputChecker(InputCheckType check);
+		~StringInputChecker() {};
+		bool check(std::string input);
+		std::string getInput();
+		std::string getInput(std::string prompt);
+
+	private:
+		std::string handleError(std::string inputPrompt);
+
+	};
+
+	//============================== IntInputCheker ============================
+	//==========================================================================
+
+	class IntInputChecker : public InputChecker
+	{
+	public:
+		IntInputChecker(InputCheckType check);
+		~IntInputChecker() {};
+		bool check(std::string input);
+		int getInput();
+		int getInput(std::string prompt);
+
+	private:
+		int handleError(std::string inputPrompt);
+
+	};
+
+	//============================== FloatInputCheker ============================
+	//============================================================================
+
+	class FloatInputChecker : public InputChecker
+	{
+	public:
+		FloatInputChecker(InputCheckType check);
+		~FloatInputChecker() {};
+		bool check(std::string input);
+		float getInput();
+		float getInput(std::string prompt);
+
+
+	private:
+		float handleError(std::string inputPrompt);
+
+	};
+
 }
