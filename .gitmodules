@@ -1,0 +1,3 @@
+[submodule "Instructor"]
+	path = Instructor
+	url = git@github.com:jannunzi/CS1500.git
