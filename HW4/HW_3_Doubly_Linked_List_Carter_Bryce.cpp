@@ -314,46 +314,88 @@ DonutTray::DonutTray(const DonutTray &other)
 }
 void DonutTray::appendDonut(Donut* donut)
 {
-	this->tail->next = donut;
-	this->tail = donut;
+	if (this->length == 0)
+	{
+		this->head = donut;
+		this->tail = donut;
+	}
+	else
+	{
+		this->tail->next = donut;
+		this->tail = donut;
+	}
+	this->length++;
+
 }
 void DonutTray::display()
 {
 	Donut* current = this->head;
-	bool done = false;
-	while (!done)
-	{
-		current->display;
-		done = (current == this->tail ? true : false);
 
+	cout << "----"<<endl;
+	int counter = 0;
+	while (current != NULL)
+	{
+		cout << "["<<counter<<"] ";
+		current->display();
 		current = current->next;
+		counter++;
 	}
+	cout << "====" << endl;
+
+	
 }
 void DonutTray::concatenate(const DonutTray* other)
 {
 	this->tail->next = other->head;
+	other->head->prev = this->tail;
 	this->tail = other->tail;
+	this->length += other->length;
 }
 DonutTray* goodCopy(const DonutTray* other)
 {
 	DonutTray* newTray = new DonutTray();
 	Donut* current(other->head);
 	newTray->head = current;
-	while (current != other->tail)
+	while (current->next != NULL)
 	{
 		Donut* nextDonut(current->next);
 		current->next = nextDonut;
+		nextDonut->prev = current;
 		current = nextDonut;
-
 	}
-
+	newTray->tail = current;
+	newTray->length = other->length;
+	return newTray;
 }
 void DonutTray::removeStaleDonuts(int maxAge)
 {
-	// implement this method
+	Donut* current(this->head);
+	while (current != NULL)
+	{
+		if (current->age > maxAge)
+		{
+			this->removeDonut(current);
+		}
+	}
 }
 
 void DonutTray::removeDonut(Donut* donut)
 {
-	// implement this method
+	if (donut == this->head)
+	{
+		this->head = donut->next;
+		donut->next->prev = NULL;
+	}
+	else if (donut == this->tail)
+	{
+		this->tail = donut->prev;
+		donut->prev->next = NULL;
+	}
+	else
+	{
+		donut->prev->next = donut->next;
+		donut->next->prev = donut->prev;
+	}
+	this->length--;
+	delete donut;
 }
