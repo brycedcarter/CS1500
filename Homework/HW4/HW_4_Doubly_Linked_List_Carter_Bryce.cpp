@@ -373,13 +373,15 @@ DonutTray* goodCopy(const DonutTray* other)
 void DonutTray::removeStaleDonuts(int maxAge)
 {
 	Donut* current = this->head;
+	Donut* next;
 	while (current != NULL)
 	{
+		next = current->next;
 		if (current->age > maxAge)
 		{
 			this->removeDonut(current);
 		}
-		current = current->next;
+		current = next;
 	}
 }
 
