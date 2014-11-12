@@ -84,36 +84,128 @@ public:
 	void traversePostOrder();
 };
 
+void EmployeeBinarySearchTree::insert(EmployeeNode* node, EmployeeNode** root)
+{
+
+	if (*root == NULL)
+	{
+		*root = node;
+	}
+	else
+	{
+		if (node->employee->getFirstName().compare((*root)->employee->getFirstName()) < 0)
+		{
+			this->insert(node, &(*root)->left);
+		}
+		else if (node->employee->getFirstName().compare((*root)->employee->getFirstName()) > 0)
+		{
+			this->insert(node, &(*root)->right);
+		}
+		else
+		{
+			cout << "======= ERROR! =======\n================\nNode with same key value already exists!\nInsertion was NOT performed.\n====================";
+		}
+	}
+}
+
 void EmployeeBinarySearchTree::insert(Employee* employee)
 {
-	// Implement this method
+	EmployeeNode* node = new EmployeeNode(employee);
+	this->insert(node, &(this->root));
+}
+
+void EmployeeBinarySearchTree::traverseInOrder(EmployeeNode* root)
+{
+	if (root->left != NULL)
+	{
+		this->traverseInOrder(root->left);
+	}
+	root->employee->display();
+	if (root->right != NULL)
+	{
+		this->traverseInOrder(root->right);
+	}
 }
 
 void EmployeeBinarySearchTree::traverseInOrder()
 {
-	// Implement this method
+	this->traverseInOrder(this->root);
+}
+
+void EmployeeBinarySearchTree::traversePreOrder(EmployeeNode* root)
+{
+	root->employee->display();
+	if (root->left != NULL)
+	{
+		this->traversePreOrder(root->left);
+	}
+	if (root->right != NULL)
+	{
+		this->traversePreOrder(root->right);
+	}
 }
 
 void EmployeeBinarySearchTree::traversePreOrder()
 {
-	// Implement this method
+	this->traversePreOrder(this->root);
+}
+
+void EmployeeBinarySearchTree::traversePostOrder(EmployeeNode* root)
+{
+	if (root->left != NULL)
+	{
+		this->traversePostOrder(root->left);
+	}
+	if (root->right != NULL)
+	{
+		this->traversePostOrder(root->right);
+	}
+	root->employee->display();
 }
 
 void EmployeeBinarySearchTree::traversePostOrder()
 {
-	// Implement this method
+	this->traversePostOrder(this->root);
 }
+
+Employee* EmployeeBinarySearchTree::depthFirstSearch(string firstName, EmployeeNode* root)
+{
+	if (root == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		int compareValue = firstName.compare(root->employee->getFirstName());
+		if (compareValue == 0)
+		{
+			return root->employee;
+		}
+		else if (compareValue < 0)
+		{
+			return this->depthFirstSearch(firstName, root->left);
+		}
+		else if (compareValue > 0)
+		{
+			return this->depthFirstSearch(firstName, root->right);
+		}
+	}
+}
+
 
 Employee* EmployeeBinarySearchTree::depthFirstSearch(string firstName)
 {
-	// Implement this method
-	return NULL;
+	return this->depthFirstSearch(firstName, this->root);
+}
+
+Employee* EmployeeBinarySearchTree::breadthFirstSearch(string firstName, EmployeeNode* root)
+{
+
 }
 
 Employee* EmployeeBinarySearchTree::breadthFirstSearch(string firstName)
 {
-	// Implement this method (Extra Credit)
-	return NULL;
+	
 }
 
 void EmployeeBinarySearchTree::remove(string firstName)
