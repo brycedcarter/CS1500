@@ -57,11 +57,23 @@ struct EmployeeNode
 	Employee* employee;
 	EmployeeNode* left = NULL;
 	EmployeeNode* right = NULL;
+	EmployeeNode* queueNext = NULL;
 	EmployeeNode(){}
 	EmployeeNode(Employee* employee)
 	{
 		this->employee = employee;
 	}
+};
+
+class EmployeeNodeQueue
+{
+private:
+	EmployeeNode* front = NULL;
+	EmployeeNode* back = NULL;
+public:
+	void enqueue(EmployeeNode* node);
+	EmployeeNode* dequeue();
+	EmployeeNodeQueue(){}
 };
 
 class EmployeeBinarySearchTree
@@ -72,17 +84,51 @@ private:
 	void traverseInOrder(EmployeeNode* root);
 	void traversePreOrder(EmployeeNode* root);
 	void traversePostOrder(EmployeeNode* root);
-	Employee* breadthFirstSearch(string firstName, EmployeeNode* root);
 	Employee* depthFirstSearch(string firstName, EmployeeNode* root);
+	void remove(string firstName, EmployeeNode* root, EmployeeNode** parentsChild);
+	EmployeeNode* getMinNode(EmployeeNode* root);
 public:
 	void insert(Employee* employee);
 	void remove(string firstName);
-	Employee* breadthFirstSearch(string firstName);
 	Employee* depthFirstSearch(string firstName);
 	void traverseInOrder();
 	void traversePreOrder();
 	void traversePostOrder();
+	void traverseBreadthFirst();
 };
+
+void EmployeeNodeQueue::enqueue(EmployeeNode* node)
+{
+	if (node != NULL)
+	{
+		if (this->front == NULL)
+		{
+			this->front = node;
+		}
+		else
+		{
+			this->back->queueNext = node;
+		}
+		this->back = node;
+	}
+}
+
+EmployeeNode* EmployeeNodeQueue::dequeue()
+{
+	EmployeeNode* removedNode;
+	if (this->front == NULL)
+	{
+		removedNode = NULL;
+	}
+	else
+	{
+		removedNode = this->front;
+		this->front = removedNode->queueNext;
+		removedNode->queueNext = NULL;
+	}
+	
+	return removedNode;
+}
 
 void EmployeeBinarySearchTree::insert(EmployeeNode* node, EmployeeNode** root)
 {
@@ -168,6 +214,21 @@ void EmployeeBinarySearchTree::traversePostOrder()
 	this->traversePostOrder(this->root);
 }
 
+void EmployeeBinarySearchTree::traverseBreadthFirst()
+{
+	EmployeeNodeQueue queue = EmployeeNodeQueue();
+	EmployeeNode* currentNode;
+	queue.enqueue(this->root);
+	currentNode = queue.dequeue();
+	do 
+	{
+		queue.enqueue(currentNode->left);
+		queue.enqueue(currentNode->right);
+		currentNode->employee->display();
+		currentNode = queue.dequeue();
+	} while (currentNode != NULL);
+}
+
 Employee* EmployeeBinarySearchTree::depthFirstSearch(string firstName, EmployeeNode* root)
 {
 	if (root == NULL)
@@ -192,25 +253,73 @@ Employee* EmployeeBinarySearchTree::depthFirstSearch(string firstName, EmployeeN
 	}
 }
 
+EmployeeNode* EmployeeBinarySearchTree::getMinNode(EmployeeNode* root)
+{
+	if (root->left == NULL)
+	{
+		return root;
+	}
+	else
+	{
+		return this->getMinNode(root->left);
+	}
+}
 
 Employee* EmployeeBinarySearchTree::depthFirstSearch(string firstName)
 {
 	return this->depthFirstSearch(firstName, this->root);
 }
 
-Employee* EmployeeBinarySearchTree::breadthFirstSearch(string firstName, EmployeeNode* root)
+void EmployeeBinarySearchTree::remove(string firstName, EmployeeNode* root, EmployeeNode** parentsChild)
 {
+	if (root == NULL)
+	{
+		cout << "Value did not exist in tree and thus could not be removed" << endl;
+		return;
+	}
 
-}
+	int compareValue = firstName.compare(root->employee->getFirstName());
 
-Employee* EmployeeBinarySearchTree::breadthFirstSearch(string firstName)
-{
-	
+	if (compareValue < 0)
+	{
+		this->remove(firstName, root->left, &root->left);
+	}
+	else if (compareValue > 0)
+	{
+		this->remove(firstName, root->right, &root->right);
+	}
+	else if (compareValue == 0)
+	{
+
+		if (root->left != NULL && root->right != NULL)
+		{
+			EmployeeNode* copyMin = new EmployeeNode(this->getMinNode(root->right)->employee);
+			*parentsChild = copyMin;
+			copyMin->left = root->left;
+			copyMin->right = root->right;
+			this->remove(copyMin->employee->getFirstName(), root->right, &copyMin->right);
+		}
+		else if (root->left != NULL)
+		{
+			*parentsChild = root->left;
+		}
+		else if (root->right != NULL)
+		{
+			*parentsChild = root->right;
+		}
+		else
+		{
+			*parentsChild = NULL;
+		}
+		delete root;
+
+	}
 }
 
 void EmployeeBinarySearchTree::remove(string firstName)
 {
-	// Implement this method (Extra Credit)
+	cout << "\n\nRemoving: " << firstName << endl;
+	this->remove(firstName, root, &this->root);
 }
 
 
@@ -233,6 +342,7 @@ int main()
 	tree->insert(frank);
 	tree->insert(edward);
 	tree->insert(gregory);
+
 
 	/*
 	The tree now looks like this:
@@ -261,16 +371,21 @@ int main()
 		cout << "Not Found" << endl;
 	}
 
-	cout << endl << "Breadth First Search: " << endl;
-	found = tree->breadthFirstSearch("Frank");
-	if (found != NULL)
-	{
-		found->display();
-	}
-	else
-	{
-		cout << "Not Found" << endl;
-	}
+	cout << endl << "Breadth First Traversal: " << endl;
+	tree->traverseBreadthFirst();
+
+	tree->remove("Frank");
+	cout << endl << "Breadth First Traversal: " << endl;
+	tree->traverseBreadthFirst();
+	tree->remove("Gregory");
+	cout << endl << "Breadth First Traversal: " << endl;
+	tree->traverseBreadthFirst();
+	tree->remove("Edward");
+	cout << endl << "Breadth First Traversal: " << endl;
+	tree->traverseBreadthFirst();
+	tree->remove("Daniel");
+	cout << endl << "Breadth First Traversal: " << endl;
+	tree->traverseBreadthFirst();
 
 	getchar();
 }
