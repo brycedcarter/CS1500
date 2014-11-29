@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Lab_1_Hello_World_Carter_Bryce.cpp.cpp">
+    <ClCompile Include="Lab_12_Binary_Search_Tree_Carter_Bryce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

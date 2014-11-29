@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D11849C7-F7AB-436E-99EE-DD5153E93420}</ProjectGuid>
+    <ProjectGuid>{25781BD6-FD68-4BB9-A6B6-3DF003572CAD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Lab1</RootNamespace>
+    <RootNamespace>Lab12</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,7 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Lab_1_Hello_World_Carter_Bryce.cpp.cpp" />
+    <ClCompile Include="Lab_12_Binary_Search_Tree_Carter_Bryce.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
